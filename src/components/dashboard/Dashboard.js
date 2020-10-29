@@ -4,9 +4,6 @@ import ProjectList from '../projects/ProjectList';
 import { connect } from 'react-redux';
 
 import { firestoreConnect } from 'react-redux-firebase'
-// //connect to a collection in firestore 
-// import { usefirestoreConnect } from 'react-redux-firebase';
-//to combine connect and firestore together for our higher order componets
 import { compose } from 'redux';
 
 class Dashboard extends Component {
@@ -30,7 +27,7 @@ class Dashboard extends Component {
 
 //state of our store 
 const mapStateToProps = (state) => {
-    console.log(state);
+    // console.log(state);
     return {
         //props: state from firestore projects collection  
         projects: state.firestore.ordered.projects

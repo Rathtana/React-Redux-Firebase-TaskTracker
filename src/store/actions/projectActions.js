@@ -12,7 +12,7 @@ export const createProject = (project) => {
             authroId: 12345,
             createdAt: new Date()
         }).then((docref) => {
-            console.log(docref.id);
+            // console.log(docref.id);
             // resume dispatch success
             dispatch({ type: 'CREATE_PROJECT', project })
         }).catch(err => {
