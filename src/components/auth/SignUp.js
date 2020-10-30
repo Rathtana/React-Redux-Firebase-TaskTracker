@@ -1,54 +1,67 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux';
 
 class SignUp extends Component {
-    state = {
-      email: '',
-      password: '',
-      firstName: '',
-      lastName: '',
-    };
+  state = {
+    email: '',
+    password: '',
+    firstName: '',
+    lastName: '',
+  };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(this.state);
-    }
-    
-    handleChange = (e) => {
-      this.setState({
-        [e.target.id]: e.target.value
-      })
-    }
-    render() {
-        console.log(this.state);
-        return (
-            <div className="container">
-                <form onSubmit={this.handleSubmit} className="white">
-                  <h5 className="grey-text text-darken-3">Sign Up</h5>
-                  
-                  <div className="input-field">
-                    <input id="email" type="email" onChange={this.handleChange}></input> 
-                    <label htmlFor="email">Email</label>
-                  </div>
-                 
-                  <div className="input-field">
-                    <input id="password" type="password" onChange={this.handleChange}></input> 
-                    <label htmlFor="password">Password</label>
-                  </div>
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+  }
 
-                  <div className="input-field">
-                    <input id="firstName" type="text" onChange={this.handleChange}></input> 
-                    <label htmlFor="firstName">First Name</label>
-                  </div>
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+  render() {
+    const { auth } = this.props;
+    //redirect to the dashboard if already signed in
+    if (auth.uid)
+      return <Redirect to='/' />
+    else if (auth.uid === undefined) //auth hasn't loaded yet 
+      return <div></div>
+    return (
+      <div className="container">
+        <form onSubmit={this.handleSubmit} className="white">
+          <h5 className="grey-text text-darken-3">Sign Up</h5>
 
-                  <div className="input-field">
-                    <input id="lastName" type="text" onChange={this.handleChange}></input> 
-                    <label htmlFor="lastName">Last Name</label>
-                  </div>
-                  <button className="btn pink lighten-1" type="submit">Sign up</button>
-                </form>
-            </div>
-        )
-    }
+          <div className="input-field">
+            <input id="email" type="email" onChange={this.handleChange}></input>
+            <label htmlFor="email">Email</label>
+          </div>
+
+          <div className="input-field">
+            <input id="password" type="password" onChange={this.handleChange}></input>
+            <label htmlFor="password">Password</label>
+          </div>
+
+          <div className="input-field">
+            <input id="firstName" type="text" onChange={this.handleChange}></input>
+            <label htmlFor="firstName">First Name</label>
+          </div>
+
+          <div className="input-field">
+            <input id="lastName" type="text" onChange={this.handleChange}></input>
+            <label htmlFor="lastName">Last Name</label>
+          </div>
+          <button className="btn pink lighten-1" type="submit">Sign up</button>
+        </form>
+      </div>
+    )
+  }
 }
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth
+  }
+}
+
+export default connect(mapStateToProps)(SignUp);
