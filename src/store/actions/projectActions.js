@@ -3,13 +3,17 @@ export const createProject = (project) => {
 
         // getting an instance to our firestore db
         const firestore = getFirestore();
+
+        // getting data from our state 
+        const profile = getState().firebase.profile;
+        const authorId = getState().firebase.auth.uid;
         
         // make async call to database 
         firestore.collection('projects').add({
             ...project,
-            authorFirstName: 'Net',
-            authorLastName: 'Ninja',
-            authroId: 12345,
+            authorFirstName: profile.firstName,
+            authorLastName: profile.lastName,
+            authorId: authorId,
             createdAt: new Date()
         }).then((docref) => {
             // console.log(docref.id);

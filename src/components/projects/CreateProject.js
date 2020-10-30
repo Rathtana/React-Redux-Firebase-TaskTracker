@@ -11,7 +11,8 @@ class CreateProject extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.createProject(this.state)
+        this.props.createProject(this.state);
+        this.props.history.push('/'); //redirect 
     }
     
     handleChange = (e) => {
@@ -22,8 +23,9 @@ class CreateProject extends Component {
     render() {
         const { auth } = this.props;
         //route guarding
-        if(!auth.id)
+        if(!auth.uid)
           return <Redirect to='/signin'/>
+        console.log("in create new project")
         return (
             <div className="container">
                 <form onSubmit={this.handleSubmit} className="white">
