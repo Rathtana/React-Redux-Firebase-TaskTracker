@@ -20,15 +20,21 @@ const store = createStore(rootReducer,
   )
 );
 
+const config = {
+  userProfile: 'users', // where profiles are stored in database,
+  useFirestoreForProfile: true
+};
 
 const rrfProps = {
   firebase,
-  config: fbConfig,
+  config,
   dispatch: store.dispatch,
   createFirestoreInstance,
 
 
 }
+
+
 ReactDOM.render(
   <Provider store={store}>
       <ReactReduxFirebaseProvider {...rrfProps}>
