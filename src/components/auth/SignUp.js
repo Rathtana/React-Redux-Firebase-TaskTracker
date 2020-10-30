@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
+import { signUp } from '../../store/actions/authActions'
 
 class SignUp extends Component {
   state = {
@@ -12,7 +13,9 @@ class SignUp extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    const { signUp } = this.props;
+
+    signUp(this.state);
   }
 
   handleChange = (e) => {
@@ -21,11 +24,11 @@ class SignUp extends Component {
     })
   }
   render() {
-    const { auth } = this.props;
+    const { auth, authError } = this.props;
     //redirect to the dashboard if already signed in
     if (auth.uid)
       return <Redirect to='/' />
-    else if (auth.uid === undefined) //auth hasn't loaded yet 
+    else if (!auth.isLoaded) //auth hasn't loaded yet 
       return <div></div>
     return (
       <div className="container">
@@ -52,16 +55,26 @@ class SignUp extends Component {
             <label htmlFor="lastName">Last Name</label>
           </div>
           <button className="btn pink lighten-1" type="submit">Sign up</button>
+          <div className="red-text center">
+            { authError ? <p> { authError } </p> : null}
+          </div>
         </form>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    auth: state.firebase.auth
+    signUp: (newUser) => dispatch(signUp(newUser))
   }
 }
 
-export default connect(mapStateToProps)(SignUp);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+    authError: state.auth.authError
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

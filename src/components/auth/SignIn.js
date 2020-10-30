@@ -25,7 +25,7 @@ class SignIn extends Component {
       //redirect to the dashboard if already signed in
       if(auth.uid)
         return <Redirect to='/' />
-      else if (auth.uid === undefined)
+      else if (!auth.isLoaded) //auth hasn't loaded yet 
         return <div></div>
       return (
             <div className="container">
